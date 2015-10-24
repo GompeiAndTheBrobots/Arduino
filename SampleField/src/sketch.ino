@@ -12,7 +12,7 @@ void loop(){
 	uint8_t availabilityByte = 0;
 	//Fill the bitfield
 	for(int i=0; i<8; i++) {
-		availabilityByte |= (digitalRead(i) << i);
+		availabilityByte |= (!digitalRead(i) << i);
 	}
 	//Send the bitfield
 	Serial.write(availabilityByte);
