@@ -1,0 +1,14 @@
+
+
+
+
+
+.build_ano/mega2560/src/robot.cpp : src/robot.ino
+	@mkdir -p .build_ano/mega2560/src
+	@echo [93msrc/robot.ino[0m
+	@/usr/local/bin/ano preproc --source-dir src  -o $@ $^
+
+
+all : .build_ano/mega2560/src/robot.cpp
+	@true
+
