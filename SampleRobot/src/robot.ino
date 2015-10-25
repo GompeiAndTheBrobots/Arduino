@@ -1,14 +1,20 @@
+#include <BluetoothMaster.h>
+#include <ReactorProtocol.h>
+#include <LiquidCrystal.h>
 
-void setup(){
+#include "Robot.h"
+
+Robot *steve;
+
+void setup() {
   Serial.begin(9600);
-  Serial3.begin(115200);
-  pinMode(14, INPUT_PULLUP);
-  pinMode(15, INPUT_PULLUP);
+  steve = Robot::getInstance();
+  steve->setup();
 }
 
-void loop(){
-  while (Serial3.available()){
-    byte b = Serial3.read();
-    Serial.println(b,HEX);
-  }
+
+void loop() {
+  steve->btClient.readMessage();
+  steve->btClient.sendHeartbeat();
+  steve->btClient.sendRadiationAlert();
 }
