@@ -17,7 +17,6 @@ void setup() {
 
 
 void loop() {
-  delay(500);
   steve->btClient.readMessage();
   steve->btClient.sendHeartbeat();
   steve->btClient.sendStatus();
