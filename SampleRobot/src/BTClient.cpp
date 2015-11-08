@@ -14,46 +14,24 @@ void BTClient::setup(){
   Serial3.begin(115200);
 }
 
-int BTClient::availableSupplyTube(){
-  // lookup the first 1 in this byte
-  // supply tube 1 is column 4, tub 4 is 1
-  if ((supply & 0x1) == 0x1) {return 4;}
-  else if ((supply & 0x2) == 0x2) {return 3;}
-  else if ((supply & 0x4) == 0x4) {return 2;}
-  else if ((supply & 0x8) == 0x8) {return 1;}
-  else {
-    return -1;
-  }
+void BTClient::sendStatus(){
+  byte data[3];
+  data[0] = 4;
+  data[1] = 2;
+  data[2] = 6;
+  sendData(STATUS_MSG, data);
 }
 
-int BTClient::openStorageTube(){
-  // storage tube 1 is column 4, tub 4 is 1
-  if ((storage & 0x1) != 0x1) {return 4;}
-  else if ((storage & 0x2) != 0x2) {return 3;}
-  else if ((storage & 0x4) != 0x4) {return 2;}
-  else if ((storage & 0x8) != 0x8) {return 1;}
-  else {
-    return -1;
-  }
+void BTClient::sendLowRadiationAlert(){
+  byte data[3];
+  data[0] = 0x2C;
+  sendData(RADIATION_MSG, data);
 }
 
-void BTClient::sendRadiationAlert(){
-  unsigned long t = millis();
-  unsigned long dt = t - lastSentRadiation;
-  if (dt > RADIATION_PERIOD){
-    lastSentRadiation = t;
-    byte data[3];
-
-    if (Robot::getInstance()->radiating){
-
-      data[0] = 0x2C;
-
-      if (Robot::getInstance()->highRadiating){
-        data[0] = 0xFF;
-      }
-      sendData(RADIATION_MSG, data);
-    }
-  }
+void BTClient::sendHighRadiationAlert(){
+  byte data[3];
+  data[0] = 0xFF;
+  sendData(RADIATION_MSG, data);
 }
 
 void BTClient::sendHeartbeat(){
@@ -63,6 +41,10 @@ void BTClient::sendHeartbeat(){
     lastSentHeartbeat = t;
     sendData(HEARTBEAT_MSG, NULL);
   }
+}
+
+void BTClient::sendDebugString(String str){
+  Serial.println(str);
 }
 
 void BTClient::sendData(MSG_TYPE type, byte data[3]){
@@ -81,7 +63,6 @@ void BTClient::readMessage(){
     //don't care about ones not for us
     if (pkt[4] == TEAM_NUMBER || pkt[4] == 0){
       if (pcol.getData(pkt,rawData,messageType)){
-
         char str[17];
 				switch(messageType){
           case STORAGE_MSG:

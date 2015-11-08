@@ -17,12 +17,14 @@ class Robot {
     /** \brief lsetup servos and stuff. called by main setup */
     void setup();
 
+    bool carryingSpentRod();
+    bool carryingNewRod();
+
     /** \brief print to 0,0 on lcd */
     void debugPrint(char *str);
     void debugPrint(int i);
     void debugPrint2(char *str);
     void debugPrint2(int i);
-    int row,col,direction;
 
     /** \brief the object for reading and sending bluetooth message */
     BTClient btClient;
@@ -43,4 +45,7 @@ class Robot {
     /** \brief there's only one robot, so use private constructor and instance*/
     Robot();
     static Robot *instance;
+
+    const static int spentRodPin = 23,
+          newRodPin = 24;
 };

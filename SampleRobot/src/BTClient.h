@@ -27,7 +27,12 @@ class BTClient {
     int openStorageTube();
 
     /** \brief send 0xff to the field computer */
-    void sendRadiationAlert();
+    void sendLowRadiationAlert();
+    void sendHighRadiationAlert();
+    void sendStatus();
+
+    /** \brief send any old string to be printed by field/phone */
+    void sendDebugString(String str);
 
     /** \brief send 0x00 to field computer */
     void sendHeartbeat();
@@ -44,6 +49,7 @@ class BTClient {
      RADIATION_MSG = 0x03,
      STOP_MSG = 0x04,
      RESUME_MSG = 0x05,
+     STATUS_MSG = 0x06,
      HEARTBEAT_MSG = 0x07} MSG_TYPE;
 
     /** \brief send the given data to the field computer */
