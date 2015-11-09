@@ -16,9 +16,9 @@ void BTClient::setup(){
 
 void BTClient::sendStatus(){
   byte data[3];
-  data[0] = 4;
-  data[1] = 2;
-  data[2] = 6;
+  data[0] = random(3)+1;
+  data[1] = random(2)+1;
+  data[2] = random(7)+1;
   sendData(STATUS_MSG, data);
 }
 
